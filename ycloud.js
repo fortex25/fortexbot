@@ -14,7 +14,7 @@ async function sendWhatsAppMessage(to, text) {
             },
             {
                 headers: {
-                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'YCLOUD-API-Key': process.env.YCLOUD_API_KEY,
                     'Content-Type': 'application/json'
                 }
             }

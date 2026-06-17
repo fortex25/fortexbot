@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+console.log("API KEY:", process.env.YCLOUD_API_KEY);
+
 const express = require('express');
 const { sendWhatsAppMessage } = require('./ycloud');
 
