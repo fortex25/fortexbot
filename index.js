@@ -278,19 +278,18 @@ app.post('/webhook', async (req, res) => {
 
   }
 
-if (session.step === 'other_course') {
+  if (session.step === 'other_course') {
 
-    session.course = text;
+      session.course = text;
 
-    await saveSession(from, session);
+      session.step = 'admission_year';
 
-    await sendWhatsAppMessage(
-        from,
-        `Course selected: ${text}`
-    );
+      await saveSession(from, session);
 
-    return res.status(200).send('OK');
-}
+      await sendAdmissionYearButtons(from);
+
+      return res.status(200).send('OK');
+  }
 
         return res.status(200).send('OK');
 
