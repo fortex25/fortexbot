@@ -448,6 +448,77 @@ async function sendStateList(to) {
         );
     }
 }
+async function sendBudgetList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Budget Preference'
+                    },
+                    body: {
+                        text: 'What is your approximate budget?'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Budget',
+                        sections: [
+                            {
+                                title: 'Budget Options',
+                                rows: [
+                                    {
+                                        id: 'below_5_lakhs',
+                                        title: 'Below ₹5 Lakhs'
+                                    },
+                                    {
+                                        id: '5_to_10_lakhs',
+                                        title: '₹5 - 10 Lakhs'
+                                    },
+                                    {
+                                        id: '10_to_20_lakhs',
+                                        title: '₹10 - 20 Lakhs'
+                                    },
+                                    {
+                                        id: 'above_20_lakhs',
+                                        title: 'Above ₹20 Lakhs'
+                                    },
+                                    {
+                                        id: 'not_sure_budget',
+                                        title: 'Not Sure'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('Budget List Sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'Budget List Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
@@ -455,5 +526,6 @@ module.exports = {
     sendStreamList,
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
-    sendStateList
+    sendStateList,
+    sendBudgetList
 };

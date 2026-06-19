@@ -7,7 +7,8 @@ const {
     sendStreamList,
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
-    sendStateList
+    sendStateList,
+    sendBudgetList
 } = require('./ycloud');
 
 const {
@@ -300,6 +301,18 @@ app.post('/webhook', async (req, res) => {
     await saveSession(from, session);
 
     await sendStateList(from);
+
+    return res.status(200).send('OK');
+  }
+  if (session.step === 'state') {
+
+    session.state = text;
+
+    session.step = 'budget';
+
+    await saveSession(from, session);
+
+    await sendBudgetList(from);
 
     return res.status(200).send('OK');
   }
