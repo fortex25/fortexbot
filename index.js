@@ -32,8 +32,9 @@ app.post('/webhook', async (req, res) => {
         const from = message.from;
 
         const text =
-            message.text?.body ||
-            '';
+          message.text?.body ||
+          message.interactive?.list_reply?.id ||
+          '';
 
         console.log('Webhook Received');
         console.log(JSON.stringify(req.body, null, 2));
@@ -102,13 +103,50 @@ app.post('/webhook', async (req, res) => {
 
         if (session.step === 'menu') {
 
-            await sendWhatsAppMessage(
-                from,
-                'Please select an option from the menu.'
-            );
+    if (text === 'admission_assistance') {
 
-            return res.status(200).send('OK');
-        }
+        await sendWhatsAppMessage(
+            from,
+            '🎓 Admission Assistance Selected'
+        );
+
+        session.step = 'admission_assistance';
+
+        await saveSession(from, session);
+
+        return res.status(200).send('OK');
+    }
+
+    if (text === 'admission_chances') {
+
+        await sendWhatsAppMessage(
+            from,
+            '📊 Check Admission Chances Selected'
+        );
+
+        session.step = 'admission_chances';
+
+        await saveSession(from, session);
+
+        return res.status(200).send('OK');
+    }
+
+    if (text === 'career_counseling') {
+
+        await sendWhatsAppMessage(
+            from,
+            '🧑‍🎓 Career Counseling Selected'
+        );
+
+        session.step = 'career_counseling';
+
+        await saveSession(from, session);
+
+        return res.status(200).send('OK');
+    }
+
+    return res.status(200).send('OK');
+}
 
         return res.status(200).send('OK');
 
