@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const {
     sendWhatsAppMessage,
-    sendMainMenuList
+    sendMainMenuButtons
 } = require('./ycloud');
 
 const {
@@ -32,9 +32,10 @@ app.post('/webhook', async (req, res) => {
         const from = message.from;
 
         const text =
-          message.text?.body ||
-          message.interactive?.list_reply?.id ||
-          '';
+            message.text?.body ||
+            message.interactive?.list_reply?.id ||
+            message.interactive?.button_reply?.id ||
+            '';
 
         console.log('Webhook Received');
         console.log(JSON.stringify(req.body, null, 2));
@@ -140,7 +141,7 @@ app.post('/webhook', async (req, res) => {
               `Thank you ${session.name} 😊`
           );
 
-          await sendMainMenuList(from);
+          await sendMainMenuButtons(from);
 
           return res.status(200).send('OK');
       }

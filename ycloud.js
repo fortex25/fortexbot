@@ -94,8 +94,66 @@ async function sendMainMenuList(to) {
         );
     }
 }
+async function sendMainMenuButtons(to) {
+    try {
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'button',
+                    body: {
+                        text: 'How can we help you today?'
+                    },
+                    action: {
+                        buttons: [
+                            {
+                                type: 'reply',
+                                reply: {
+                                    id: 'admission_assistance',
+                                    title: 'Admission'
+                                }
+                            },
+                            {
+                                type: 'reply',
+                                reply: {
+                                    id: 'admission_chances',
+                                    title: 'Chances'
+                                }
+                            },
+                            {
+                                type: 'reply',
+                                reply: {
+                                    id: 'career_counseling',
+                                    title: 'Counseling'
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('Buttons sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'Button Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
-    sendMainMenuList
+    sendMainMenuButtons
 };
