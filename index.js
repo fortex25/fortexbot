@@ -85,6 +85,40 @@ app.post('/webhook', async (req, res) => {
 
             session.place = text;
 
+            session.step = 'parent_name';
+
+            await saveSession(from, session);
+
+            await sendWhatsAppMessage(
+                from,
+                'Please enter Parent / Guardian Name.'
+            );
+
+            return res.status(200).send('OK');
+        }
+
+        //PARENT
+
+        if (session.step === 'parent_name') {
+
+            session.parentName = text;
+
+            session.step = 'parent_phone';
+
+            await saveSession(from, session);
+
+            await sendWhatsAppMessage(
+                from,
+                'Please enter Parent / Guardian Contact Number.'
+            );
+
+            return res.status(200).send('OK');
+        }
+        //PARENT NUMBER 
+        if (session.step === 'parent_phone') {
+
+            session.parentPhone = text;
+
             session.step = 'menu';
 
             await saveSession(from, session);
