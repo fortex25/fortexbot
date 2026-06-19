@@ -1,8 +1,15 @@
 require('dotenv').config();
 
 const express = require('express');
-const { sendWhatsAppMessage } = require('./ycloud');
-const { getSession, saveSession } = require('./session');
+const {
+    sendWhatsAppMessage,
+    sendMainMenuList
+} = require('./ycloud');
+
+const {
+    getSession,
+    saveSession
+} = require('./session');
 
 const app = express();
 
@@ -13,6 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook', async (req, res) => {
+
     try {
 
         const message = req.body.whatsappInboundMessage;
@@ -22,12 +30,17 @@ app.post('/webhook', async (req, res) => {
         }
 
         const from = message.from;
-        const text = message.text?.body || '';
 
-        console.log('From:', from);
-        console.log('Text:', text);
+        const text =
+            message.text?.body ||
+            '';
+
+        console.log('Webhook Received');
+        console.log(JSON.stringify(req.body, null, 2));
 
         const session = await getSession(from);
+
+        // START
 
         if (
             text.toLowerCase() === 'hi' ||
@@ -47,9 +60,12 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
+        // NAME
+
         if (session.step === 'name') {
 
             session.name = text;
+
             session.step = 'place';
 
             await saveSession(from, session);
@@ -62,59 +78,34 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
+        // PLACE
+
         if (session.step === 'place') {
 
             session.place = text;
+
             session.step = 'menu';
 
             await saveSession(from, session);
 
             await sendWhatsAppMessage(
                 from,
-                `Thank you ${session.name} 😊
-
-How can we help you today?
-
-1. Admission Assistance
-2. Check Admission Chances
-3. Career Counseling
-
-Reply with 1, 2 or 3.`
+                `Thank you ${session.name} 😊`
             );
+
+            await sendMainMenuList(from);
 
             return res.status(200).send('OK');
         }
 
+        // MENU
+
         if (session.step === 'menu') {
 
-            if (text === '1') {
-
-                await sendWhatsAppMessage(
-                    from,
-                    'Admission Assistance selected.'
-                );
-
-            } else if (text === '2') {
-
-                await sendWhatsAppMessage(
-                    from,
-                    'Check Admission Chances selected.'
-                );
-
-            } else if (text === '3') {
-
-                await sendWhatsAppMessage(
-                    from,
-                    'Career Counseling selected.'
-                );
-
-            } else {
-
-                await sendWhatsAppMessage(
-                    from,
-                    'Please reply with 1, 2 or 3.'
-                );
-            }
+            await sendWhatsAppMessage(
+                from,
+                'Please select an option from the menu.'
+            );
 
             return res.status(200).send('OK');
         }
@@ -123,7 +114,10 @@ Reply with 1, 2 or 3.`
 
     } catch (error) {
 
-        console.error('Webhook Error:', error);
+        console.error(
+            'Webhook Error:',
+            error
+        );
 
         return res.status(200).send('OK');
     }
@@ -132,5 +126,7 @@ Reply with 1, 2 or 3.`
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(
+        `Server running on port ${PORT}`
+    );
 });
