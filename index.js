@@ -4,7 +4,8 @@ const express = require('express');
 const {
     sendWhatsAppMessage,
     sendMainMenuButtons,
-    sendStreamList
+    sendStreamList,
+    sendMedicalCoursesList
 } = require('./ycloud');
 
 const {
@@ -185,6 +186,21 @@ app.post('/webhook', async (req, res) => {
         session.step = 'career_counseling';
 
         await saveSession(from, session);
+
+        return res.status(200).send('OK');
+    }
+
+    return res.status(200).send('OK');
+  }
+  if (session.step === 'stream_selection') {
+
+    if (text === 'medical') {
+
+        session.stream = 'Medical';
+
+        await saveSession(from, session);
+
+        await sendMedicalCoursesList(from);
 
         return res.status(200).send('OK');
     }

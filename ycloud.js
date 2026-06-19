@@ -235,9 +235,97 @@ async function sendStreamList(to) {
         );
     }
 }
+async function sendMedicalCoursesList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Medical Courses'
+                    },
+                    body: {
+                        text: 'Select your preferred course'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Course',
+                        sections: [
+                            {
+                                title: 'Medical Courses',
+                                rows: [
+                                    {
+                                        id: 'mbbs',
+                                        title: 'MBBS'
+                                    },
+                                    {
+                                        id: 'bds',
+                                        title: 'BDS'
+                                    },
+                                    {
+                                        id: 'bams',
+                                        title: 'BAMS'
+                                    },
+                                    {
+                                        id: 'bhms',
+                                        title: 'BHMS'
+                                    },
+                                    {
+                                        id: 'bpt',
+                                        title: 'BPT'
+                                    },
+                                    {
+                                        id: 'bsc_nursing',
+                                        title: 'BSc Nursing'
+                                    },
+                                    {
+                                        id: 'allied_health',
+                                        title: 'Allied Health Sciences'
+                                    },
+                                    {
+                                        id: 'bpharm',
+                                        title: 'B.Pharm'
+                                    },
+                                    {
+                                        id: 'medical_other',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('Medical Course List Sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'Medical Course List Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
-    sendStreamList
+    sendStreamList,
+    sendMedicalCoursesList
 };
