@@ -30,6 +30,8 @@ app.post('/webhook', async (req, res) => {
     try {
 
         const message = req.body.whatsappInboundMessage;
+        const hasDocument = message.type === 'document';
+        const hasImage = message.type === 'image';
 
         if (!message) {
             return res.status(200).send('OK');
@@ -316,6 +318,46 @@ app.post('/webhook', async (req, res) => {
 
     return res.status(200).send('OK');
   }
+  if (session.step === 'budget') {
+
+    session.budget = text;
+
+    session.step = 'sslc_marksheet';
+
+    await saveSession(from, session);
+
+    await sendWhatsAppMessage(
+        from,
+        'Please upload your SSLC (10th) Mark Sheet.\n\nYou may upload it as:\n• Photo\n• PDF'
+    );
+
+    return res.status(200).send('OK');
+}
+  if (session.step === 'sslc_marksheet') {
+
+    if (!hasDocument && !hasImage) {
+
+        await sendWhatsAppMessage(
+            from,
+            'Please upload your SSLC (10th) Mark Sheet as a Photo or PDF.'
+        );
+
+        return res.status(200).send('OK');
+    }
+
+    session.sslcReceived = true;
+
+    session.step = 'plus_two_marksheet';
+
+    await saveSession(from, session);
+
+    await sendWhatsAppMessage(
+        from,
+        'Thank you.\n\nPlease upload your Plus One or Plus Two Mark Sheet.\n\nYou may upload it as:\n• Photo\n• PDF'
+    );
+
+    return res.status(200).send('OK');
+}
 
         return res.status(200).send('OK');
 
