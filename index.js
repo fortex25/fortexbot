@@ -40,6 +40,7 @@ app.post('/webhook', async (req, res) => {
             message.interactive?.button_reply?.id ||
             '';
 
+        console.log('TEXR RECIEVED', text);
         console.log('Webhook Received');
         console.log(JSON.stringify(req.body, null, 2));
 
