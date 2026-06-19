@@ -117,22 +117,33 @@ app.post('/webhook', async (req, res) => {
         //PARENT NUMBER 
         if (session.step === 'parent_phone') {
 
-            session.parentPhone = text;
+          const phone = text.replace(/\D/g, '');
 
-            session.step = 'menu';
+          if (phone.length !== 10) {
 
-            await saveSession(from, session);
+              await sendWhatsAppMessage(
+                  from,
+                  'Please enter a valid 10-digit Parent / Guardian Contact Number.'
+              );
 
-            await sendWhatsAppMessage(
-                from,
-                `Thank you ${session.name} 😊`
-            );
+              return res.status(200).send('OK');
+          }
 
-            await sendMainMenuList(from);
+          session.parentPhone = phone;
 
-            return res.status(200).send('OK');
-        }
+          session.step = 'menu';
 
+          await saveSession(from, session);
+
+          await sendWhatsAppMessage(
+              from,
+              `Thank you ${session.name} 😊`
+          );
+
+          await sendMainMenuList(from);
+
+          return res.status(200).send('OK');
+      }
         // MENU
 
         if (session.step === 'menu') {
