@@ -358,6 +358,77 @@ app.post('/webhook', async (req, res) => {
 
     return res.status(200).send('OK');
 }
+  if (session.step === 'plus_two_marksheet') {
+
+    if (!hasDocument && !hasImage) {
+
+        await sendWhatsAppMessage(
+            from,
+            'Please upload your Plus One or Plus Two Mark Sheet as a Photo or PDF.'
+        );
+
+        return res.status(200).send('OK');
+    }
+
+    session.plusTwoReceived = true;
+
+    session.step = 'id_proof';
+
+    await saveSession(from, session);
+
+    await sendWhatsAppMessage(
+        from,
+        'Thank you.\n\nPlease upload any ID Proof.\n\nExamples:\n• Aadhaar Card\n• Voter ID\n• Passport\n• Driving Licence\n\nYou may upload it as:\n• Photo\n• PDF'
+    );
+
+    return res.status(200).send('OK');
+}
+  if (session.step === 'id_proof') {
+
+    if (!hasDocument && !hasImage) {
+
+        await sendWhatsAppMessage(
+            from,
+            'Please upload your ID Proof as a Photo or PDF.'
+        );
+
+        return res.status(200).send('OK');
+    }
+
+    session.idProofReceived = true;
+
+    await saveSession(from, session);
+
+    await sendWhatsAppMessage(
+        from,
+`🎓 Admission Enquiry Submitted
+
+Name: ${session.name}
+Place: ${session.place}
+
+Parent: ${session.parentName}
+Parent Number: ${session.parentPhone}
+
+Stream: ${session.stream}
+Course: ${session.course}
+
+Admission Year: ${session.admissionYear}
+State: ${session.state}
+Budget: ${session.budget}
+
+✅ SSLC Mark Sheet Received
+✅ Plus One / Plus Two Mark Sheet Received
+✅ ID Proof Received
+
+Our admission counselor will contact you shortly.`
+    );
+
+    session.step = 'start';
+
+    await saveSession(from, session);
+
+    return res.status(200).send('OK');
+}
 
         return res.status(200).send('OK');
 
