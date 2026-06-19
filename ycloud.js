@@ -322,10 +322,70 @@ async function sendMedicalCoursesList(to) {
         );
     }
 }
+async function sendAdmissionYearButtons(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'button',
+                    body: {
+                        text: 'Which admission year are you planning for?'
+                    },
+                    action: {
+                        buttons: [
+                            {
+                                type: 'reply',
+                                reply: {
+                                    id: 'this_year',
+                                    title: 'This Year'
+                                }
+                            },
+                            {
+                                type: 'reply',
+                                reply: {
+                                    id: 'upcoming_year',
+                                    title: 'Upcoming Year'
+                                }
+                            },
+                            {
+                                type: 'reply',
+                                reply: {
+                                    id: 'just_exploring',
+                                    title: 'Exploring'
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('Admission Year Buttons Sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'Admission Year Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
     sendStreamList,
-    sendMedicalCoursesList
+    sendMedicalCoursesList,
+    sendAdmissionYearButtons
 };

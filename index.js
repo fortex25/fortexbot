@@ -5,7 +5,8 @@ const {
     sendWhatsAppMessage,
     sendMainMenuButtons,
     sendStreamList,
-    sendMedicalCoursesList
+    sendMedicalCoursesList,
+    sendAdmissionYearButtons
 } = require('./ycloud');
 
 const {
@@ -237,6 +238,27 @@ app.post('/webhook', async (req, res) => {
             'Please type the course you are interested in.'
         );
 
+
+        return res.status(200).send('OK');
+    }
+    if (
+        text === 'mbbs' ||
+        text === 'bds' ||
+        text === 'bams' ||
+        text === 'bhms' ||
+        text === 'bpt' ||
+        text === 'bsc_nursing' ||
+        text === 'allied_health' ||
+        text === 'bpharm'
+    ) {
+
+        session.course = text;
+        session.step = 'admission_year';
+
+        await saveSession(from, session);
+
+        await sendAdmissionYearButtons(from);
+
         return res.status(200).send('OK');
     }
 
@@ -245,12 +267,15 @@ app.post('/webhook', async (req, res) => {
 
     await saveSession(from, session);
 
-    await sendWhatsAppMessage(
-        from,
-        `Course selected: ${text}`
-    );
+    session.course = text;
+    session.step = 'admission_year';
+
+    await saveSession(from, session);
+
+    await sendAdmissionYearButtons(from);
 
     return res.status(200).send('OK');
+
   }
 
 if (session.step === 'other_course') {
