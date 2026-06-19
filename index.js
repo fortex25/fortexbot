@@ -197,6 +197,7 @@ app.post('/webhook', async (req, res) => {
     if (text === 'medical') {
 
         session.stream = 'Medical';
+        session.step = 'medical_courses';
 
         await saveSession(from, session);
 
@@ -206,7 +207,39 @@ app.post('/webhook', async (req, res) => {
     }
 
     return res.status(200).send('OK');
-}
+  }
+  if (session.step === 'medical_courses') {
+
+    if (text === 'medical_other') {
+
+        session.step = 'other_course';
+
+        await saveSession(from, session);
+
+        await sendWhatsAppMessage(
+            from,
+            'Please type the course you are interested in.'
+        );
+
+        return res.status(200).send('OK');
+    }
+
+    return res.status(200).send('OK');
+  }
+  if (session.step === 'other_course') {
+
+    session.course = text;
+
+    await saveSession(from, session);
+
+    await sendWhatsAppMessage(
+        from,
+        `Course selected: ${text}`
+    );
+
+    return res.status(200).send('OK');
+  }
+
 
         return res.status(200).send('OK');
 
