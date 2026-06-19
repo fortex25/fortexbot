@@ -19,12 +19,7 @@ async function saveSession(phone, session) {
     );
 }
 
-async function clearSession(phone) {
-    await redis.del(`user:${phone}`);
-}
-
 module.exports = {
     getSession,
-    saveSession,
-    clearSession
+    saveSession
 };

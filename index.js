@@ -1,15 +1,7 @@
 require('dotenv').config();
 
-console.log(
-  "API KEY EXISTS:",
-  !!process.env.YCLOUD_API_KEY
-);
-
 const express = require('express');
-const {
-    sendWhatsAppMessage,
-    sendMainMenuList
-} = require('./ycloud');
+const { sendWhatsAppMessage } = require('./ycloud');
 const { getSession, saveSession } = require('./session');
 
 const app = express();
@@ -21,10 +13,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook', async (req, res) => {
-
-    console.log('Webhook received!');
-    console.log(JSON.stringify(req.body, null, 2));
-
     try {
 
         const message = req.body.whatsappInboundMessage;
@@ -41,7 +29,6 @@ app.post('/webhook', async (req, res) => {
 
         const session = await getSession(from);
 
-        // START
         if (
             text.toLowerCase() === 'hi' ||
             text.toLowerCase() === 'hello' ||
@@ -60,7 +47,6 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
-        // NAME
         if (session.step === 'name') {
 
             session.name = text;
@@ -76,7 +62,6 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
-        // PLACE
         if (session.step === 'place') {
 
             session.place = text;
@@ -86,15 +71,20 @@ app.post('/webhook', async (req, res) => {
 
             await sendWhatsAppMessage(
                 from,
-                `Thank you ${session.name} 😊`
-            );
+                `Thank you ${session.name} 😊
 
-            await sendMainMenuList(from);
+How can we help you today?
+
+1. Admission Assistance
+2. Check Admission Chances
+3. Career Counseling
+
+Reply with 1, 2 or 3.`
+            );
 
             return res.status(200).send('OK');
         }
 
-        // MENU
         if (session.step === 'menu') {
 
             if (text === '1') {
@@ -129,13 +119,13 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
-        res.status(200).send('OK');
+        return res.status(200).send('OK');
 
     } catch (error) {
 
         console.error('Webhook Error:', error);
 
-        res.status(200).send('OK');
+        return res.status(200).send('OK');
     }
 });
 
