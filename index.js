@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const redis = require('./redis');
+
 console.log(
   "API KEY EXISTS:",
   !!process.env.YCLOUD_API_KEY
