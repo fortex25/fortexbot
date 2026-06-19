@@ -152,8 +152,92 @@ async function sendMainMenuButtons(to) {
         );
     }
 }
+async function sendStreamList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Admission Assistance'
+                    },
+                    body: {
+                        text: 'Select your preferred stream'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Stream',
+                        sections: [
+                            {
+                                title: 'Available Streams',
+                                rows: [
+                                    {
+                                        id: 'medical',
+                                        title: 'Medical'
+                                    },
+                                    {
+                                        id: 'engineering',
+                                        title: 'Engineering'
+                                    },
+                                    {
+                                        id: 'management',
+                                        title: 'Management'
+                                    },
+                                    {
+                                        id: 'arts_science',
+                                        title: 'Arts & Science'
+                                    },
+                                    {
+                                        id: 'commerce',
+                                        title: 'Commerce'
+                                    },
+                                    {
+                                        id: 'law',
+                                        title: 'Law'
+                                    },
+                                    {
+                                        id: 'aviation',
+                                        title: 'Aviation'
+                                    },
+                                    {
+                                        id: 'other_stream',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('Stream List Sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'Stream List Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
-    sendMainMenuButtons
+    sendMainMenuButtons,
+    sendStreamList
 };

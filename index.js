@@ -3,7 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const {
     sendWhatsAppMessage,
-    sendMainMenuButtons
+    sendMainMenuButtons,
+    sendStreamList
 } = require('./ycloud');
 
 const {
@@ -12,6 +13,7 @@ const {
 } = require('./session');
 
 const app = express();
+
 
 app.use(express.json());
 
@@ -151,18 +153,14 @@ app.post('/webhook', async (req, res) => {
 
     if (text === 'admission_assistance') {
 
-        await sendWhatsAppMessage(
-            from,
-            '🎓 Admission Assistance Selected'
-        );
-
-        session.step = 'admission_assistance';
+        session.step = 'stream_selection';
 
         await saveSession(from, session);
 
+        await sendStreamList(from);
+
         return res.status(200).send('OK');
     }
-
     if (text === 'admission_chances') {
 
         await sendWhatsAppMessage(
