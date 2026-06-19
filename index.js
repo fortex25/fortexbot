@@ -6,7 +6,8 @@ const {
     sendMainMenuButtons,
     sendStreamList,
     sendMedicalCoursesList,
-    sendAdmissionYearButtons
+    sendAdmissionYearButtons,
+    sendStateList
 } = require('./ycloud');
 
 const {
@@ -289,6 +290,18 @@ app.post('/webhook', async (req, res) => {
       await sendAdmissionYearButtons(from);
 
       return res.status(200).send('OK');
+  }
+  if (session.step === 'admission_year') {
+
+    session.admissionYear = text;
+
+    session.step = 'state';
+
+    await saveSession(from, session);
+
+    await sendStateList(from);
+
+    return res.status(200).send('OK');
   }
 
         return res.status(200).send('OK');

@@ -381,11 +381,79 @@ async function sendAdmissionYearButtons(to) {
         );
     }
 }
+async function sendStateList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Preferred State'
+                    },
+                    body: {
+                        text: 'Which state are you interested in?'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select State',
+                        sections: [
+                            {
+                                title: 'Available Options',
+                                rows: [
+                                    {
+                                        id: 'kerala',
+                                        title: 'Kerala'
+                                    },
+                                    {
+                                        id: 'karnataka',
+                                        title: 'Karnataka'
+                                    },
+                                    {
+                                        id: 'tamil_nadu',
+                                        title: 'Tamil Nadu'
+                                    },
+                                    {
+                                        id: 'any_state',
+                                        title: 'Any State'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('State List Sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'State List Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
     sendStreamList,
     sendMedicalCoursesList,
-    sendAdmissionYearButtons
+    sendAdmissionYearButtons,
+    sendStateList
 };
