@@ -6,7 +6,10 @@ console.log(
 );
 
 const express = require('express');
-const { sendWhatsAppMessage } = require('./ycloud');
+const {
+    sendWhatsAppMessage,
+    sendMainMenuList
+} = require('./ycloud');
 const { getSession, saveSession } = require('./session');
 
 const app = express();
@@ -83,18 +86,10 @@ app.post('/webhook', async (req, res) => {
 
             await sendWhatsAppMessage(
                 from,
-                `Thank you ${session.name} 😊
-
-How can we help you today?
-
-1. Admission Assistance
-
-2. Check Admission Chances
-
-3. Career Counseling
-
-Reply with 1, 2 or 3.`
+                `Thank you ${session.name} 😊`
             );
+
+            await sendMainMenuList(from);
 
             return res.status(200).send('OK');
         }
