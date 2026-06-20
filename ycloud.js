@@ -933,6 +933,88 @@ async function sendLawCoursesList(to) {
     }
 }
 
+async function sendAviationCoursesList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Aviation Courses'
+                    },
+                    body: {
+                        text: 'Select your preferred aviation course'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Course',
+                        sections: [
+                            {
+                                title: 'Aviation Programs',
+                                rows: [
+                                    {
+                                        id: 'bsc_aviation',
+                                        title: 'BSc Aviation'
+                                    },
+                                    {
+                                        id: 'airport_management',
+                                        title: 'Airport Management'
+                                    },
+                                    {
+                                        id: 'cabin_crew',
+                                        title: 'Cabin Crew'
+                                    },
+                                    {
+                                        id: 'pilot_training',
+                                        title: 'Pilot Training'
+                                    },
+                                    {
+                                        id: 'aircraft_maintenance',
+                                        title: 'Aircraft Maintenance'
+                                    },
+                                    {
+                                        id: 'ground_staff',
+                                        title: 'Ground Staff'
+                                    },
+                                    {
+                                        id: 'aviation_other',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log(
+            'Aviation List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Aviation Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
@@ -945,5 +1027,6 @@ module.exports = {
     sendManagementCoursesList,
     sendArtsCoursesList, 
     sendCommerceCoursesList,
-    sendLawCoursesList
+    sendLawCoursesList,
+    sendAviationCoursesList
 };

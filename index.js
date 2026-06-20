@@ -13,7 +13,8 @@ const {
     sendManagementCoursesList,
     sendArtsCoursesList,
     sendCommerceCoursesList,
-    sendLawCoursesList
+    sendLawCoursesList,
+    sendAviationCoursesList
 } = require('./ycloud');
 
 const {
@@ -47,6 +48,10 @@ const{
 const{
     handleLaw
 }=require('./handlers/lawHandler');
+
+const {
+    handleAviation
+} = require('./handlers/aviationHandler');
 
 const {
     getSession,
@@ -167,6 +172,17 @@ app.post('/webhook', async (req, res) => {
                 from
             );
         if (lawHandled){
+            return res.status(200).send('OK');
+        }
+
+        const aviationHandled =
+            await handleAviation(
+                session,
+                text,
+                from
+            );
+
+        if (aviationHandled) {
             return res.status(200).send('OK');
         }
 
@@ -386,6 +402,19 @@ Let's get started!
         await saveSession(from, session);
 
         await sendLawCoursesList(from);
+
+        return res.status(200).send('OK');
+    }
+
+    if (text === 'aviation') {
+
+        session.stream = 'Aviation';
+
+        session.step = 'aviation_courses';
+
+        await saveSession(from, session);
+
+        await sendAviationCoursesList(from);
 
         return res.status(200).send('OK');
     }
