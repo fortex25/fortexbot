@@ -773,6 +773,89 @@ async function sendArtsCoursesList(to) {
         );
     }
 }
+
+async function sendCommerceCoursesList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Commerce Courses'
+                    },
+                    body: {
+                        text: 'Select your preferred commerce course'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Course',
+                        sections: [
+                            {
+                                title: 'Commerce Courses',
+                                rows: [
+                                    {
+                                        id: 'bcom',
+                                        title: 'BCom'
+                                    },
+                                    {
+                                        id: 'bcom_finance',
+                                        title: 'BCom Finance'
+                                    },
+                                    {
+                                        id: 'bcom_ca',
+                                        title: 'BCom CA'
+                                    },
+                                    {
+                                        id: 'bcom_acca',
+                                        title: 'BCom ACCA'
+                                    },
+                                    {
+                                        id: 'ca',
+                                        title: 'CA Foundation'
+                                    },
+                                    {
+                                        id: 'cma',
+                                        title: 'CMA'
+                                    },
+                                    {
+                                        id: 'commerce_other',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log(
+            'Commerce List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Commerce Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
@@ -783,5 +866,6 @@ module.exports = {
     sendPercentageList,
     sendEngineeringCoursesList,
     sendManagementCoursesList,
-    sendArtsCoursesList
+    sendArtsCoursesList, 
+    sendCommerceCoursesList
 };
