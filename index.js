@@ -10,7 +10,8 @@ const {
     sendStateList,
     sendPercentageList,
     sendEngineeringCoursesList,
-    sendManagementCoursesList
+    sendManagementCoursesList,
+    sendArtsCoursesList
 } = require('./ycloud');
 
 const {
@@ -32,6 +33,10 @@ const {
 const {
     handleManagement
 } = require('./handlers/managementHandler');
+
+const{
+    handleArts
+}=require('./handlers/artsHandler');
 
 const {
     getSession,
@@ -125,7 +130,15 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
-
+        const artsHandled=
+        awaithandleArts(
+            session,
+            text,
+            from
+        )
+        if (artsHandled){
+            return res.status(200).send('OK');
+        }
 
         // START
 
@@ -304,6 +317,19 @@ Let's get started!
         await saveSession(from, session);
 
         await sendManagementCoursesList(from);
+
+        return res.status(200).send('OK');
+    }
+
+    if (text === 'arts') {
+
+        session.stream = 'Arts & Science';
+
+        session.step = 'arts_courses';
+
+        await saveSession(from, session);
+
+        await sendArtsCoursesList(from);
 
         return res.status(200).send('OK');
     }
