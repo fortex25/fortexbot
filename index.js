@@ -131,7 +131,7 @@ app.post('/webhook', async (req, res) => {
         }
 
         const artsHandled=
-        awaithandleArts(
+        await handleArts(
             session,
             text,
             from
