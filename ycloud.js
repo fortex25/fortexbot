@@ -627,16 +627,16 @@ async function sendManagementCoursesList(to) {
                 type: 'list',
                 header: {
                     type: 'text',
-                    text: 'Management'
+                    text: 'Management Courses'
                 },
                 body: {
                     text: '💼 Select your preferred management course.'
                 },
                 action: {
-                    button: 'Courses',
+                    button: 'View Courses',
                     sections: [
                         {
-                            title: 'Programs',
+                            title: 'Management Programs',
                             rows: [
                                 {
                                     id: 'bba',
@@ -649,7 +649,7 @@ async function sendManagementCoursesList(to) {
                                     description: 'Commerce'
                                 },
                                 {
-                                    id: 'hotel_management',
+                                    id: 'hotel',
                                     title: 'Hotel Management',
                                     description: 'Hospitality'
                                 },
@@ -659,7 +659,7 @@ async function sendManagementCoursesList(to) {
                                     description: 'Aviation Studies'
                                 },
                                 {
-                                    id: 'management_other',
+                                    id: 'mgmt_other',
                                     title: 'Other Course',
                                     description: 'Type your course'
                                 }
@@ -677,7 +677,7 @@ async function sendManagementCoursesList(to) {
         }
     );
 
-    console.log('Management list sent');
+    console.log('Management list sent:', response.data);
 }
 
 module.exports = {
