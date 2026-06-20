@@ -529,6 +529,74 @@ What is your approximate percentage?`
         );
     }
 }
+async function sendEngineeringCoursesList(to) {
+
+    await axios.post(
+        `${BASE_URL}/messages/sendDirectly`,
+        {
+            to: to,
+            type: 'interactive',
+            interactive: {
+                type: 'list',
+                header: {
+                    type: 'text',
+                    text: 'Engineering Courses'
+                },
+                body: {
+                    text: '💻 Select your preferred engineering course.'
+                },
+                action: {
+                    button: 'View Courses',
+                    sections: [
+                        {
+                            title: 'Engineering Programs',
+                            rows: [
+                                {
+                                    id: 'cse',
+                                    title: 'Computer Science'
+                                },
+                                {
+                                    id: 'ai_ds',
+                                    title: 'AI & Data Science'
+                                },
+                                {
+                                    id: 'cyber_security',
+                                    title: 'Cyber Security'
+                                },
+                                {
+                                    id: 'mechanical',
+                                    title: 'Mechanical'
+                                },
+                                {
+                                    id: 'civil',
+                                    title: 'Civil'
+                                },
+                                {
+                                    id: 'electrical',
+                                    title: 'Electrical'
+                                },
+                                {
+                                    id: 'electronics',
+                                    title: 'Electronics'
+                                },
+                                {
+                                    id: 'engineering_other',
+                                    title: 'Other Course'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            headers: {
+                'X-API-Key': process.env.YCLOUD_API_KEY,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+}
 
 module.exports = {
     sendWhatsAppMessage,
@@ -537,5 +605,6 @@ module.exports = {
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
     sendStateList,
-    sendPercentageList
+    sendPercentageList,
+    sendEngineeringCoursesList
 };

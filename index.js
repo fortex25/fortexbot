@@ -8,7 +8,8 @@ const {
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
     sendStateList,
-    sendPercentageList
+    sendPercentageList,
+    sendEngineeringCoursesList
 } = require('./ycloud');
 
 const {
@@ -22,6 +23,10 @@ const {
 const{
     handleDocuments
 }=require('./handlers/documentHandler');
+
+const {
+    handleEngineering
+} = require('./handlers/engineeringHandler');
 
 const {
     getSession,
@@ -92,7 +97,17 @@ app.post('/webhook', async (req, res) => {
         if(documentHandled){
             return res.status(200).send('OK');
         }
+        
+        const engineeringHandled =
+            await handleEngineering(
+            session,
+            text,
+            from
+        );
 
+        if (engineeringHandled) {
+            return res.status(200).send('OK');
+        }
 
 
 
@@ -249,6 +264,19 @@ Let's get started!
             from,
             'Please type the course you are interested in.'
         );
+
+        return res.status(200).send('OK');
+    }
+
+    if (text === 'engineering') {
+
+        session.stream = 'Engineering';
+
+        session.step = 'engineering_courses';
+
+        await saveSession(from, session);
+
+        await sendEngineeringCoursesList(from);
 
         return res.status(200).send('OK');
     }
