@@ -530,82 +530,90 @@ What is your approximate percentage?`
     }
 }
 async function sendEngineeringCoursesList(to) {
+    try {
 
-    const response = await axios.post(
-        'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
-        {
-            to: to,
-            type: 'interactive',
-            interactive: {
-                type: 'list',
-                header: {
-                    type: 'text',
-                    text: 'Engineering'
-                },
-                body: {
-                    text: '💻 Select your preferred engineering course.'
-                },
-                action: {
-                    button: 'Courses',
-                    sections: [
-                        {
-                            title: 'Programs',
-                            rows: [
-                                {
-                                    id: 'cse',
-                                    title: 'Computer Science',
-                                    description: 'CSE'
-                                },
-                                {
-                                    id: 'ai_ds',
-                                    title: 'AI & DS',
-                                    description: 'Artificial Intelligence'
-                                },
-                                {
-                                    id: 'cyber_security',
-                                    title: 'Cyber Security',
-                                    description: 'Security & Ethical Hacking'
-                                },
-                                {
-                                    id: 'mechanical',
-                                    title: 'Mechanical',
-                                    description: 'Mechanical Engineering'
-                                },
-                                {
-                                    id: 'civil',
-                                    title: 'Civil',
-                                    description: 'Civil Engineering'
-                                },
-                                {
-                                    id: 'electrical',
-                                    title: 'Electrical',
-                                    description: 'Electrical Engineering'
-                                },
-                                {
-                                    id: 'electronics',
-                                    title: 'Electronics',
-                                    description: 'ECE'
-                                },
-                                {
-                                    id: 'engineering_other',
-                                    title: 'Other Course',
-                                    description: 'Type your course'
-                                }
-                            ]
-                        }
-                    ]
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Engineering Courses'
+                    },
+                    body: {
+                        text: 'Select your preferred engineering course'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Course',
+                        sections: [
+                            {
+                                title: 'Engineering Courses',
+                                rows: [
+                                    {
+                                        id: 'cse',
+                                        title: 'Computer Science'
+                                    },
+                                    {
+                                        id: 'ai_ds',
+                                        title: 'AI & Data Science'
+                                    },
+                                    {
+                                        id: 'cyber_security',
+                                        title: 'Cyber Security'
+                                    },
+                                    {
+                                        id: 'mechanical',
+                                        title: 'Mechanical'
+                                    },
+                                    {
+                                        id: 'civil',
+                                        title: 'Civil'
+                                    },
+                                    {
+                                        id: 'electrical',
+                                        title: 'Electrical'
+                                    },
+                                    {
+                                        id: 'electronics',
+                                        title: 'Electronics'
+                                    },
+                                    {
+                                        id: 'engineering_other',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
                 }
             }
-        },
-        {
-            headers: {
-                'X-API-Key': process.env.YCLOUD_API_KEY,
-                'Content-Type': 'application/json'
-            }
-        }
-    );
+        );
 
-    console.log('Engineering list sent:', response.data);
+        console.log(
+            'Engineering List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Engineering Error:',
+            error.response?.data || error.message
+        );
+    }
 }
 
 module.exports = {
