@@ -1285,10 +1285,6 @@ async function sendGuidanceList(to) {
                                         title: 'Career Guidance'
                                     },
                                     {
-                                        id: 'study_abroad',
-                                        title: 'Study Abroad'
-                                    },
-                                    {
                                         id: 'not_sure_guidance',
                                         title: 'Not Sure Yet'
                                     }
