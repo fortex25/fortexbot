@@ -7,8 +7,7 @@ const {
     sendStreamList,
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
-    sendStateList,
-    sendBudgetList
+    sendStateList
 } = require('./ycloud');
 
 const {
@@ -61,7 +60,23 @@ app.post('/webhook', async (req, res) => {
 
             await sendWhatsAppMessage(
                 from,
-                '🎓 Welcome to Fortex Education!\n\nWhat is your name?'
+                 `👋 Hi there!
+
+                  Welcome to Fortex Education.
+
+                  I'm Texa 😊, here to help you explore colleges, courses, admissions, and career options.
+
+                  Whether you're a student, parent, or guardian, I'll guide you through the process and help you find the right path for your future.
+
+                  I can help you with:
+
+                  🎓 Admission Assistance
+                  📊 Admission Chances
+                  🧑‍🎓 Career Counseling
+
+                  Let's get started!
+
+                  ✨ May I know your name?`
             );
 
             session.step = 'name';
@@ -83,47 +98,12 @@ app.post('/webhook', async (req, res) => {
 
             await sendWhatsAppMessage(
                 from,
-                'Great! Which place are you from?'
+                `Nice to meet you, ${session.name}! 😊\n\n📍 Which place are you from?`
             );
 
             return res.status(200).send('OK');
         }
 
-        // PLACE
-
-        if (session.step === 'place') {
-
-            session.place = text;
-
-            session.step = 'parent_name';
-
-            await saveSession(from, session);
-
-            await sendWhatsAppMessage(
-                from,
-                'Please enter Parent / Guardian Name.'
-            );
-
-            return res.status(200).send('OK');
-        }
-
-        //PARENT
-
-        if (session.step === 'parent_name') {
-
-            session.parentName = text;
-
-            session.step = 'parent_phone';
-
-            await saveSession(from, session);
-
-            await sendWhatsAppMessage(
-                from,
-                'Please enter Parent / Guardian Contact Number.'
-            );
-
-            return res.status(200).send('OK');
-        }
         //PARENT NUMBER 
         if (session.step === 'parent_phone') {
 
@@ -133,7 +113,7 @@ app.post('/webhook', async (req, res) => {
 
               await sendWhatsAppMessage(
                   from,
-                  'Please enter a valid 10-digit Parent / Guardian Contact Number.'
+                  `Perfect! 👍\n\nTo help you better, please share a parent or guardian contact number.\n\n📱 Enter a valid 10-digit mobile number.`
               );
 
               return res.status(200).send('OK');
@@ -310,17 +290,20 @@ app.post('/webhook', async (req, res) => {
 
     session.state = text;
 
-    session.step = 'budget';
+    session.step = 'percentage';
 
     await saveSession(from, session);
 
-    await sendBudgetList(from);
+    await sendPercentageList(from);
 
     return res.status(200).send('OK');
-  }
-  if (session.step === 'budget') {
+}
 
-    session.budget = text;
+// PERCENTAGE
+
+if (session.step === 'percentage') {
+
+    session.percentage = text;
 
     session.step = 'sslc_marksheet';
 
@@ -328,18 +311,23 @@ app.post('/webhook', async (req, res) => {
 
     await sendWhatsAppMessage(
         from,
-        'Please upload your SSLC (10th) Mark Sheet.\n\nYou may upload it as:\n• Photo\n• PDF'
+        `📄 Great!
+
+Please upload your SSLC (10th) mark sheet.`
     );
 
     return res.status(200).send('OK');
 }
-  if (session.step === 'sslc_marksheet') {
+
+// SSLC
+
+if (session.step === 'sslc_marksheet') {
 
     if (!hasDocument && !hasImage) {
 
         await sendWhatsAppMessage(
             from,
-            'Please upload your SSLC (10th) Mark Sheet as a Photo or PDF.'
+            `📎 Please upload your SSLC mark sheet to continue.`
         );
 
         return res.status(200).send('OK');
@@ -353,18 +341,23 @@ app.post('/webhook', async (req, res) => {
 
     await sendWhatsAppMessage(
         from,
-        'Thank you.\n\nPlease upload your Plus One or Plus Two Mark Sheet.\n\nYou may upload it as:\n• Photo\n• PDF'
+        `📚 Thanks!
+
+Now please upload your Plus One or Plus Two mark sheet.`
     );
 
     return res.status(200).send('OK');
 }
-  if (session.step === 'plus_two_marksheet') {
+
+// PLUS ONE / PLUS TWO
+
+if (session.step === 'plus_two_marksheet') {
 
     if (!hasDocument && !hasImage) {
 
         await sendWhatsAppMessage(
             from,
-            'Please upload your Plus One or Plus Two Mark Sheet as a Photo or PDF.'
+            `📎 Please upload your Plus One or Plus Two mark sheet to continue.`
         );
 
         return res.status(200).send('OK');
@@ -378,18 +371,23 @@ app.post('/webhook', async (req, res) => {
 
     await sendWhatsAppMessage(
         from,
-        'Thank you.\n\nPlease upload any ID Proof.\n\nExamples:\n• Aadhaar Card\n• Voter ID\n• Passport\n• Driving Licence\n\nYou may upload it as:\n• Photo\n• PDF'
+        `🪪 Almost done!
+
+Please upload any valid ID proof.`
     );
 
     return res.status(200).send('OK');
 }
-  if (session.step === 'id_proof') {
+
+// ID PROOF
+
+if (session.step === 'id_proof') {
 
     if (!hasDocument && !hasImage) {
 
         await sendWhatsAppMessage(
             from,
-            'Please upload your ID Proof as a Photo or PDF.'
+            `📎 Please upload your ID proof to continue.`
         );
 
         return res.status(200).send('OK');
@@ -401,26 +399,16 @@ app.post('/webhook', async (req, res) => {
 
     await sendWhatsAppMessage(
         from,
-`🎓 Admission Enquiry Submitted
+`🎉 Thank you, ${session.name}!
 
-Name: ${session.name}
-Place: ${session.place}
+Your enquiry has been successfully submitted.
 
-Parent: ${session.parentName}
-Parent Number: ${session.parentPhone}
+Our admission team will get in touch with you soon to assist you with the next steps.
 
-Stream: ${session.stream}
-Course: ${session.course}
+Have a great day! 😊
 
-Admission Year: ${session.admissionYear}
-State: ${session.state}
-Budget: ${session.budget}
+Team Fortex Education 💙`
 
-✅ SSLC Mark Sheet Received
-✅ Plus One / Plus Two Mark Sheet Received
-✅ ID Proof Received
-
-Our admission counselor will contact you shortly.`
     );
 
     session.step = 'start';
@@ -429,7 +417,6 @@ Our admission counselor will contact you shortly.`
 
     return res.status(200).send('OK');
 }
-
         return res.status(200).send('OK');
 
     } catch (error) {
