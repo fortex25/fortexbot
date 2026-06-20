@@ -63,22 +63,21 @@ app.post('/webhook', async (req, res) => {
             await sendWhatsAppMessage(
                 from,
                  `👋 Hi there!
+Welcome to Fortex Education.
 
-                  Welcome to Fortex Education.
+I'm Texa 😊, here to help you explore colleges, courses, admissions, and career options.
 
-                  I'm Texa 😊, here to help you explore colleges, courses, admissions, and career options.
+Whether you're a student, parent, or guardian, I'll guide you through the process and help you find the right path for your future.
 
-                  Whether you're a student, parent, or guardian, I'll guide you through the process and help you find the right path for your future.
+I can help you with:
 
-                  I can help you with:
+ 🎓 Admission Assistance
+ 📊 Admission Chances
+ 🧑‍🎓 Career Counseling
 
-                  🎓 Admission Assistance
-                  📊 Admission Chances
-                  🧑‍🎓 Career Counseling
+Let's get started!
 
-                  Let's get started!
-
-                  ✨ May I know your name?`
+✨ May I know your name?`
             );
 
             session.step = 'name';

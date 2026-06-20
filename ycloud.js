@@ -113,21 +113,21 @@ async function sendMainMenuButtons(to) {
                                 type: 'reply',
                                 reply: {
                                     id: 'admission_assistance',
-                                    title: '🎓Admission Assistance'
+                                    title: '🎓Admission'
                                 }
                             },
                             {
                                 type: 'reply',
                                 reply: {
                                     id: 'admission_chances',
-                                    title: '📈Rank/Score Analysis'
+                                    title: '📈Score Analysis'
                                 }
                             },
                             {
                                 type: 'reply',
                                 reply: {
                                     id: 'career_counseling',
-                                    title: '🧑‍🎓 Career Counseling'
+                                    title: '🧑‍🎓Counseling'
                                 }
                             }
                         ]
