@@ -448,6 +448,87 @@ async function sendStateList(to) {
         );
     }
 }
+async function sendPercentageList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Academic Performance'
+                    },
+                    body: {
+                        text:
+`📈 This helps us suggest the best colleges for you.
+
+What is your approximate percentage?`
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Percentage',
+                        sections: [
+                            {
+                                title: 'Percentage Range',
+                                rows: [
+                                    {
+                                        id: 'above_90',
+                                        title: 'Above 90%'
+                                    },
+                                    {
+                                        id: '80_90',
+                                        title: '80% - 90%'
+                                    },
+                                    {
+                                        id: '70_80',
+                                        title: '70% - 80%'
+                                    },
+                                    {
+                                        id: '60_70',
+                                        title: '60% - 70%'
+                                    },
+                                    {
+                                        id: 'below_60',
+                                        title: 'Below 60%'
+                                    },
+                                    {
+                                        id: 'results_awaited',
+                                        title: 'Results Awaited'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log(
+            'Percentage List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Percentage List Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
@@ -455,5 +536,6 @@ module.exports = {
     sendStreamList,
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
-    sendStateList
+    sendStateList,
+    sendPercentageList
 };

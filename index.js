@@ -7,7 +7,8 @@ const {
     sendStreamList,
     sendMedicalCoursesList,
     sendAdmissionYearButtons,
-    sendStateList
+    sendStateList,
+    sendPercentageList
 } = require('./ycloud');
 
 const {
@@ -29,12 +30,13 @@ app.post('/webhook', async (req, res) => {
     try {
 
         const message = req.body.whatsappInboundMessage;
-        const hasDocument = message.type === 'document';
-        const hasImage = message.type === 'image';
 
         if (!message) {
             return res.status(200).send('OK');
         }
+
+        const hasDocument = message.type === 'document';
+        const hasImage = message.type === 'image';
 
         const from = message.from;
 
@@ -105,7 +107,7 @@ app.post('/webhook', async (req, res) => {
         }
 
         //PARENT NUMBER 
-        if (session.step === 'parent_phone') {
+        if (session.step === 'place') {
 
           const phone = text.replace(/\D/g, '');
 
