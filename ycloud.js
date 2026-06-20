@@ -1015,6 +1015,77 @@ async function sendAviationCoursesList(to) {
         );
     }
 }
+
+async function sendAdmissionChanceList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Admission Chances'
+                    },
+                    body: {
+                        text: 'Want to know your admission chances? Select the option you would like us to analyze.'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Option',
+                        sections: [
+                            {
+                                title: 'Analysis Options',
+                                rows: [
+                                    {
+                                        id: 'plus_two_marks',
+                                        title: 'Plus Two Marks'
+                                    },
+                                    {
+                                        id: 'neet_score',
+                                        title: 'NEET Score'
+                                    },
+                                    {
+                                        id: 'keam_rank',
+                                        title: 'KEAM Rank'
+                                    },
+                                    {
+                                        id: 'lbs_rank',
+                                        title: 'LBS Rank'
+                                    },
+                                    {
+                                        id: 'other_exam',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Admission Chance Error:',
+            error.response?.data || error.message
+        );
+    }
+}
+
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
@@ -1028,5 +1099,6 @@ module.exports = {
     sendArtsCoursesList, 
     sendCommerceCoursesList,
     sendLawCoursesList,
-    sendAviationCoursesList
+    sendAviationCoursesList,
+    sendAdmissionChanceList
 };

@@ -14,7 +14,8 @@ const {
     sendArtsCoursesList,
     sendCommerceCoursesList,
     sendLawCoursesList,
-    sendAviationCoursesList
+    sendAviationCoursesList,
+    sendAdmissionChanceList
 } = require('./ycloud');
 
 const {
@@ -52,6 +53,10 @@ const{
 const {
     handleAviation
 } = require('./handlers/aviationHandler');
+
+const {
+    handleChance
+} = require('./handlers/chanceHandler');
 
 const {
     getSession,
@@ -181,6 +186,16 @@ app.post('/webhook', async (req, res) => {
                 text,
                 from
             );
+        const chanceHandled =
+        await handleChance(
+            session,
+            text,
+            from
+        );
+
+        if (chanceHandled) {
+            return res.status(200).send('OK');
+        }
 
         if (aviationHandled) {
             return res.status(200).send('OK');
@@ -285,14 +300,11 @@ Let's get started!
     }
     if (text === 'admission_chances') {
 
-        await sendWhatsAppMessage(
-            from,
-            '📊 Check Admission Chances Selected'
-        );
-
         session.step = 'admission_chances';
 
         await saveSession(from, session);
+
+        await sendAdmissionChanceList(from);
 
         return res.status(200).send('OK');
     }
