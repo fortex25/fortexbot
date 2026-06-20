@@ -531,8 +531,8 @@ What is your approximate percentage?`
 }
 async function sendEngineeringCoursesList(to) {
 
-     const response = await axios.post(
-            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+    const response = await axios.post(
+        'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
         {
             to: to,
             type: 'interactive',
@@ -540,48 +540,56 @@ async function sendEngineeringCoursesList(to) {
                 type: 'list',
                 header: {
                     type: 'text',
-                    text: 'Engineering Courses'
+                    text: 'Engineering'
                 },
                 body: {
                     text: '💻 Select your preferred engineering course.'
                 },
                 action: {
-                    button: 'View Courses',
+                    button: 'Courses',
                     sections: [
                         {
-                            title: 'Engineering Programs',
+                            title: 'Programs',
                             rows: [
                                 {
                                     id: 'cse',
-                                    title: 'Computer Science'
+                                    title: 'Computer Science',
+                                    description: 'CSE'
                                 },
                                 {
                                     id: 'ai_ds',
-                                    title: 'AI & Data Science'
+                                    title: 'AI & DS',
+                                    description: 'Artificial Intelligence'
                                 },
                                 {
                                     id: 'cyber_security',
-                                    title: 'Cyber Security'
+                                    title: 'Cyber Security',
+                                    description: 'Security & Ethical Hacking'
                                 },
                                 {
                                     id: 'mechanical',
-                                    title: 'Mechanical'
+                                    title: 'Mechanical',
+                                    description: 'Mechanical Engineering'
                                 },
                                 {
                                     id: 'civil',
-                                    title: 'Civil'
+                                    title: 'Civil',
+                                    description: 'Civil Engineering'
                                 },
                                 {
                                     id: 'electrical',
-                                    title: 'Electrical'
+                                    title: 'Electrical',
+                                    description: 'Electrical Engineering'
                                 },
                                 {
                                     id: 'electronics',
-                                    title: 'Electronics'
+                                    title: 'Electronics',
+                                    description: 'ECE'
                                 },
                                 {
                                     id: 'engineering_other',
-                                    title: 'Other Course'
+                                    title: 'Other Course',
+                                    description: 'Type your course'
                                 }
                             ]
                         }
@@ -596,6 +604,8 @@ async function sendEngineeringCoursesList(to) {
             }
         }
     );
+
+    console.log('Engineering list sent:', response.data);
 }
 
 module.exports = {
