@@ -12,6 +12,10 @@ const {
 } = require('./ycloud');
 
 const {
+    handleMedical
+} = require('./handlers/medicalHandler');
+
+const {
     getSession,
     saveSession
 } = require('./session');
@@ -51,6 +55,16 @@ app.post('/webhook', async (req, res) => {
         console.log(JSON.stringify(req.body, null, 2));
 
         const session = await getSession(from);
+        const medicalHandled =await handleMedical(
+                session,
+                text,
+                from
+                );
+
+        if (medicalHandled) {
+            return res.status(200).send('OK');
+        }
+
 
         // START
 
@@ -210,71 +224,7 @@ Let's get started!
     return res.status(200).send('OK');
   }
 
-  if (session.step === 'medical_courses') {
-
-    if (text === 'medical_other') {
-
-        session.step = 'other_course';
-
-        await saveSession(from, session);
-
-        await sendWhatsAppMessage(
-            from,
-            'Please type the course you are interested in.'
-        );
-
-
-        return res.status(200).send('OK');
-    }
-    if (
-        text === 'mbbs' ||
-        text === 'bds' ||
-        text === 'bams' ||
-        text === 'bhms' ||
-        text === 'bpt' ||
-        text === 'bsc_nursing' ||
-        text === 'allied_health' ||
-        text === 'bpharm'
-    ) {
-
-        session.course = text;
-        session.step = 'admission_year';
-
-        await saveSession(from, session);
-
-        await sendAdmissionYearButtons(from);
-
-        return res.status(200).send('OK');
-    }
-
-    // Any normal medical course selected
-    session.course = text;
-
-    await saveSession(from, session);
-
-    session.course = text;
-    session.step = 'admission_year';
-
-    await saveSession(from, session);
-
-    await sendAdmissionYearButtons(from);
-
-    return res.status(200).send('OK');
-
-  }
-
-  if (session.step === 'other_course') {
-
-      session.course = text;
-
-      session.step = 'admission_year';
-
-      await saveSession(from, session);
-
-      await sendAdmissionYearButtons(from);
-
-      return res.status(200).send('OK');
-  }
+  
   if (session.step === 'admission_year') {
 
     session.admissionYear = text;
