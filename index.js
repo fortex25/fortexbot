@@ -16,6 +16,14 @@ const {
 } = require('./handlers/medicalHandler');
 
 const {
+    handleAdmission
+} = require('./handlers/admissionHandler');
+
+const{
+    handleDocuments
+}=require('./handlers/documentHandler');
+
+const {
     getSession,
     saveSession
 } = require('./session');
@@ -55,15 +63,39 @@ app.post('/webhook', async (req, res) => {
         console.log(JSON.stringify(req.body, null, 2));
 
         const session = await getSession(from);
+
         const medicalHandled =await handleMedical(
                 session,
                 text,
                 from
                 );
-
         if (medicalHandled) {
             return res.status(200).send('OK');
         }
+
+        const admissionHandled =await handleAdmission(
+                session,
+                text,
+                from
+            );
+        if (admissionHandled) {
+            return res.status(200).send('OK');
+        }
+
+        const documentHandled =
+            await handleDocuments(
+                session,
+                from,
+                hasDocument,
+                hasImage
+            );
+        if(documentHandled){
+            return res.status(200).send('OK');
+        }
+
+
+
+
 
 
         // START
@@ -224,150 +256,6 @@ Let's get started!
     return res.status(200).send('OK');
   }
 
-  
-  if (session.step === 'admission_year') {
-
-    session.admissionYear = text;
-
-    session.step = 'state';
-
-    await saveSession(from, session);
-
-    await sendStateList(from);
-
-    return res.status(200).send('OK');
-  }
-  if (session.step === 'state') {
-
-    session.state = text;
-
-    session.step = 'percentage';
-
-    await saveSession(from, session);
-
-    await sendPercentageList(from);
-
-    return res.status(200).send('OK');
-}
-
-// PERCENTAGE
-
-if (session.step === 'percentage') {
-
-    session.percentage = text;
-
-    session.step = 'sslc_marksheet';
-
-    await saveSession(from, session);
-
-    await sendWhatsAppMessage(
-        from,
-        `📄 Great!
-
-Please upload your SSLC (10th) mark sheet.`
-    );
-
-    return res.status(200).send('OK');
-}
-
-// SSLC
-
-if (session.step === 'sslc_marksheet') {
-
-    if (!hasDocument && !hasImage) {
-
-        await sendWhatsAppMessage(
-            from,
-            `📎 Please upload your SSLC mark sheet to continue.`
-        );
-
-        return res.status(200).send('OK');
-    }
-
-    session.sslcReceived = true;
-
-    session.step = 'plus_two_marksheet';
-
-    await saveSession(from, session);
-
-    await sendWhatsAppMessage(
-        from,
-        `📚 Thanks!
-
-Now please upload your Plus One or Plus Two mark sheet.`
-    );
-
-    return res.status(200).send('OK');
-}
-
-// PLUS ONE / PLUS TWO
-
-if (session.step === 'plus_two_marksheet') {
-
-    if (!hasDocument && !hasImage) {
-
-        await sendWhatsAppMessage(
-            from,
-            `📎 Please upload your Plus One or Plus Two mark sheet to continue.`
-        );
-
-        return res.status(200).send('OK');
-    }
-
-    session.plusTwoReceived = true;
-
-    session.step = 'id_proof';
-
-    await saveSession(from, session);
-
-    await sendWhatsAppMessage(
-        from,
-        `🪪 Almost done!
-
-Please upload any valid ID proof.`
-    );
-
-    return res.status(200).send('OK');
-}
-
-// ID PROOF
-
-if (session.step === 'id_proof') {
-
-    if (!hasDocument && !hasImage) {
-
-        await sendWhatsAppMessage(
-            from,
-            `📎 Please upload your ID proof to continue.`
-        );
-
-        return res.status(200).send('OK');
-    }
-
-    session.idProofReceived = true;
-
-    await saveSession(from, session);
-
-    await sendWhatsAppMessage(
-        from,
-`🎉 Thank you, ${session.name}!
-
-Your enquiry has been successfully submitted.
-
-Our admission team will get in touch with you soon to assist you with the next steps.
-
-Have a great day! 😊
-
-Team Fortex Education 💙`
-
-    );
-
-    session.step = 'start';
-
-    await saveSession(from, session);
-
-    return res.status(200).send('OK');
-}
         return res.status(200).send('OK');
 
     } catch (error) {
