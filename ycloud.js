@@ -617,67 +617,82 @@ async function sendEngineeringCoursesList(to) {
 }
 
 async function sendManagementCoursesList(to) {
+    try {
 
-    const response = await axios.post(
-        'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
-        {
-            to: to,
-            type: 'interactive',
-            interactive: {
-                type: 'list',
-                header: {
-                    type: 'text',
-                    text: 'Management Courses'
-                },
-                body: {
-                    text: '💼 Select your preferred management course.'
-                },
-                action: {
-                    button: 'View Courses',
-                    sections: [
-                        {
-                            title: 'Management Programs',
-                            rows: [
-                                {
-                                    id: 'bba',
-                                    title: 'BBA',
-                                    description: 'Business Administration'
-                                },
-                                {
-                                    id: 'bcom',
-                                    title: 'BCom',
-                                    description: 'Commerce'
-                                },
-                                {
-                                    id: 'hotel',
-                                    title: 'Hotel Management',
-                                    description: 'Hospitality'
-                                },
-                                {
-                                    id: 'aviation',
-                                    title: 'Aviation',
-                                    description: 'Aviation Studies'
-                                },
-                                {
-                                    id: 'mgmt_other',
-                                    title: 'Other Course',
-                                    description: 'Type your course'
-                                }
-                            ]
-                        }
-                    ]
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Management Courses'
+                    },
+                    body: {
+                        text: 'Select your preferred management course'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Course',
+                        sections: [
+                            {
+                                title: 'Management Courses',
+                                rows: [
+                                    {
+                                        id: 'bba',
+                                        title: 'BBA'
+                                    },
+                                    {
+                                        id: 'bcom',
+                                        title: 'BCom'
+                                    },
+                                    {
+                                        id: 'hotel',
+                                        title: 'Hotel Management'
+                                    },
+                                    {
+                                        id: 'aviation',
+                                        title: 'Aviation'
+                                    },
+                                    {
+                                        id: 'business',
+                                        title: 'Business Management'
+                                    },
+                                    {
+                                        id: 'management_other',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
                 }
             }
-        },
-        {
-            headers: {
-                'X-API-Key': process.env.YCLOUD_API_KEY,
-                'Content-Type': 'application/json'
-            }
-        }
-    );
+        );
 
-    console.log('Management list sent:', response.data);
+        console.log(
+            'Management List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Management Error:',
+            error.response?.data || error.message
+        );
+    }
 }
 
 module.exports = {
