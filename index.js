@@ -321,7 +321,7 @@ Let's get started!
         return res.status(200).send('OK');
     }
 
-    if (text === 'arts') {
+    if (text === 'arts_science') {
 
         session.stream = 'Arts & Science';
 
