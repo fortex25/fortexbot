@@ -145,7 +145,7 @@ app.post('/webhook', async (req, res) => {
             session,
             text,
             from
-        )
+        );
         if (artsHandled){
             return res.status(200).send('OK');
         }
