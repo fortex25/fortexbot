@@ -856,6 +856,83 @@ async function sendCommerceCoursesList(to) {
         );
     }
 }
+
+async function sendLawCoursesList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Law Courses'
+                    },
+                    body: {
+                        text: 'Select your preferred law course'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Course',
+                        sections: [
+                            {
+                                title: 'Law Courses',
+                                rows: [
+                                    {
+                                        id: 'llb',
+                                        title: 'LLB'
+                                    },
+                                    {
+                                        id: 'ba_llb',
+                                        title: 'BA LLB'
+                                    },
+                                    {
+                                        id: 'bba_llb',
+                                        title: 'BBA LLB'
+                                    },
+                                    {
+                                        id: 'bcom_llb',
+                                        title: 'BCom LLB'
+                                    },
+                                    {
+                                        id: 'llm',
+                                        title: 'LLM'
+                                    },
+                                    {
+                                        id: 'law_other',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('Law List Sent:', response.data);
+
+    } catch (error) {
+
+        console.error(
+            'Law Error:',
+            error.response?.data || error.message
+        );
+    }
+}
+
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
@@ -867,5 +944,6 @@ module.exports = {
     sendEngineeringCoursesList,
     sendManagementCoursesList,
     sendArtsCoursesList, 
-    sendCommerceCoursesList
+    sendCommerceCoursesList,
+    sendLawCoursesList
 };
