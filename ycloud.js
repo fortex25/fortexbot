@@ -616,6 +616,70 @@ async function sendEngineeringCoursesList(to) {
     }
 }
 
+async function sendManagementCoursesList(to) {
+
+    const response = await axios.post(
+        'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+        {
+            to: to,
+            type: 'interactive',
+            interactive: {
+                type: 'list',
+                header: {
+                    type: 'text',
+                    text: 'Management'
+                },
+                body: {
+                    text: '💼 Select your preferred management course.'
+                },
+                action: {
+                    button: 'Courses',
+                    sections: [
+                        {
+                            title: 'Programs',
+                            rows: [
+                                {
+                                    id: 'bba',
+                                    title: 'BBA',
+                                    description: 'Business Administration'
+                                },
+                                {
+                                    id: 'bcom',
+                                    title: 'BCom',
+                                    description: 'Commerce'
+                                },
+                                {
+                                    id: 'hotel_management',
+                                    title: 'Hotel Management',
+                                    description: 'Hospitality'
+                                },
+                                {
+                                    id: 'aviation',
+                                    title: 'Aviation',
+                                    description: 'Aviation Studies'
+                                },
+                                {
+                                    id: 'management_other',
+                                    title: 'Other Course',
+                                    description: 'Type your course'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            headers: {
+                'X-API-Key': process.env.YCLOUD_API_KEY,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+
+    console.log('Management list sent');
+}
+
 module.exports = {
     sendWhatsAppMessage,
     sendMainMenuButtons,
@@ -624,5 +688,6 @@ module.exports = {
     sendAdmissionYearButtons,
     sendStateList,
     sendPercentageList,
-    sendEngineeringCoursesList
+    sendEngineeringCoursesList,
+    sendManagementCoursesList
 };

@@ -9,7 +9,8 @@ const {
     sendAdmissionYearButtons,
     sendStateList,
     sendPercentageList,
-    sendEngineeringCoursesList
+    sendEngineeringCoursesList,
+    sendManagementCoursesList
 } = require('./ycloud');
 
 const {
@@ -27,6 +28,10 @@ const{
 const {
     handleEngineering
 } = require('./handlers/engineeringHandler');
+
+const {
+    handleManagement
+} = require('./handlers/managementHandler');
 
 const {
     getSession,
@@ -109,7 +114,16 @@ app.post('/webhook', async (req, res) => {
             return res.status(200).send('OK');
         }
 
+        const managementHandled =
+            await handleManagement(
+                session,
+                text,
+                from
+            );
 
+        if (managementHandled) {
+            return res.status(200).send('OK');
+        }
 
 
 
@@ -277,6 +291,19 @@ Let's get started!
         await saveSession(from, session);
 
         await sendEngineeringCoursesList(from);
+
+        return res.status(200).send('OK');
+    }
+
+    if (text === 'management') {
+
+        session.stream = 'Management';
+
+        session.step = 'management_courses';
+
+        await saveSession(from, session);
+
+        await sendManagementCoursesList(from);
 
         return res.status(200).send('OK');
     }
