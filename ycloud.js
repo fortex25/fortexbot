@@ -531,8 +531,8 @@ What is your approximate percentage?`
 }
 async function sendEngineeringCoursesList(to) {
 
-    await axios.post(
-        `${BASE_URL}/messages/sendDirectly`,
+     const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
         {
             to: to,
             type: 'interactive',
