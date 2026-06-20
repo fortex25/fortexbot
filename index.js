@@ -15,7 +15,10 @@ const {
     sendCommerceCoursesList,
     sendLawCoursesList,
     sendAviationCoursesList,
-    sendAdmissionChanceList
+    sendAdmissionChanceList,
+    sendCareerQualificationList,
+    sendInterestList,
+    sendGuidanceList
 } = require('./ycloud');
 
 const {
@@ -57,6 +60,12 @@ const {
 const {
     handleChance
 } = require('./handlers/chanceHandler');
+
+const {
+    handleCareer
+} = require('./handlers/careerHandler');
+
+
 
 const {
     getSession,
@@ -186,20 +195,31 @@ app.post('/webhook', async (req, res) => {
                 text,
                 from
             );
+        if (aviationHandled) {
+            return res.status(200).send('OK');
+        }
+
         const chanceHandled =
         await handleChance(
             session,
             text,
             from
         );
-
         if (chanceHandled) {
             return res.status(200).send('OK');
         }
-
-        if (aviationHandled) {
+    
+        const careerHandled =
+            await handleCareer(
+                session,
+                text,
+                from
+            );
+        if (careerHandled) {
             return res.status(200).send('OK');
         }
+        
+        
 
         // START
 
@@ -311,14 +331,11 @@ Let's get started!
 
     if (text === 'career_counseling') {
 
-        await sendWhatsAppMessage(
-            from,
-            '🧑‍🎓 Career Counseling Selected'
-        );
-
         session.step = 'career_counseling';
 
         await saveSession(from, session);
+
+        await sendCareerQualificationList(from);
 
         return res.status(200).send('OK');
     }

@@ -1085,6 +1085,240 @@ async function sendAdmissionChanceList(to) {
         );
     }
 }
+async function sendCareerQualificationList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Career Counseling'
+                    },
+                    body: {
+                        text: 'Tell us about your current qualification.'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select',
+                        sections: [
+                            {
+                                title: 'Qualification',
+                                rows: [
+                                    {
+                                        id: 'sslc',
+                                        title: '10th Pass'
+                                    },
+                                    {
+                                        id: 'plus_one',
+                                        title: 'Plus One'
+                                    },
+                                    {
+                                        id: 'plus_two',
+                                        title: 'Plus Two'
+                                    },
+                                    {
+                                        id: 'diploma',
+                                        title: 'Diploma'
+                                    },
+                                    {
+                                        id: 'degree',
+                                        title: 'Degree'
+                                    },
+                                    {
+                                        id: 'other_qualification',
+                                        title: 'Other'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            error.response?.data || error.message
+        );
+    }
+}
+
+async function sendInterestList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Career Interests'
+                    },
+                    body: {
+                        text: '🌟 Which field interests you the most?'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Interest',
+                        sections: [
+                            {
+                                title: 'Career Interests',
+                                rows: [
+                                    {
+                                        id: 'medical_interest',
+                                        title: 'Medical'
+                                    },
+                                    {
+                                        id: 'engineering_interest',
+                                        title: 'Engineering'
+                                    },
+                                    {
+                                        id: 'commerce_interest',
+                                        title: 'Commerce'
+                                    },
+                                    {
+                                        id: 'management_interest',
+                                        title: 'Management'
+                                    },
+                                    {
+                                        id: 'law_interest',
+                                        title: 'Law'
+                                    },
+                                    {
+                                        id: 'aviation_interest',
+                                        title: 'Aviation'
+                                    },
+                                    {
+                                        id: 'arts_interest',
+                                        title: 'Arts & Science'
+                                    },
+                                    {
+                                        id: 'not_sure',
+                                        title: 'Not Sure Yet'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log(
+            'Interest List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Interest Error:',
+            error.response?.data || error.message
+        );
+    }
+}
+
+async function sendGuidanceList(to) {
+    try {
+
+        const response = await axios.post(
+            'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
+            {
+                from: process.env.PHONE_NUMBER,
+                to: to,
+                type: 'interactive',
+                interactive: {
+                    type: 'list',
+                    header: {
+                        type: 'text',
+                        text: 'Career Guidance'
+                    },
+                    body: {
+                        text: '💡 What kind of guidance are you looking for?'
+                    },
+                    footer: {
+                        text: 'Fortex Education'
+                    },
+                    action: {
+                        button: 'Select Option',
+                        sections: [
+                            {
+                                title: 'Guidance Options',
+                                rows: [
+                                    {
+                                        id: 'course_selection',
+                                        title: 'Course Selection'
+                                    },
+                                    {
+                                        id: 'college_selection',
+                                        title: 'College Selection'
+                                    },
+                                    {
+                                        id: 'career_guidance',
+                                        title: 'Career Guidance'
+                                    },
+                                    {
+                                        id: 'study_abroad',
+                                        title: 'Study Abroad'
+                                    },
+                                    {
+                                        id: 'not_sure_guidance',
+                                        title: 'Not Sure Yet'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                headers: {
+                    'X-API-Key': process.env.YCLOUD_API_KEY,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log(
+            'Guidance List Sent:',
+            response.data
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Guidance Error:',
+            error.response?.data || error.message
+        );
+    }
+}
 
 module.exports = {
     sendWhatsAppMessage,
@@ -1100,5 +1334,8 @@ module.exports = {
     sendCommerceCoursesList,
     sendLawCoursesList,
     sendAviationCoursesList,
-    sendAdmissionChanceList
+    sendAdmissionChanceList,
+    sendCareerQualificationList,
+    sendInterestList,
+    sendGuidanceList
 };
