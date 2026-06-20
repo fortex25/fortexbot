@@ -97,6 +97,8 @@ Our admission team will analyze your admission chances and contact you shortly.
 Team Fortex Education 💙`
         );
 
+        session.botStopped=true;
+
         session.step = 'start';
 
         await saveSession(from, session);

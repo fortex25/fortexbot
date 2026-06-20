@@ -102,6 +102,8 @@ Our admission team will contact you shortly to guide you through the next steps.
 Team Fortex Education 💙`
         );
 
+        session.botStopped=true;
+
         session.step = 'start';
 
         await saveSession(from, session);

@@ -108,6 +108,10 @@ app.post('/webhook', async (req, res) => {
 
         const session = await getSession(from);
 
+        if (session.botStopped){
+            return res.status(200).send('OK');
+        }
+
         const medicalHandled =await handleMedical(
                 session,
                 text,
