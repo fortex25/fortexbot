@@ -155,7 +155,7 @@ app.post('/webhook', async (req, res) => {
                 session,
                 text,
                 from
-            )
+            );
         if (commerceHandled){
             return res.status(200).send('OK');
         }
@@ -165,7 +165,7 @@ app.post('/webhook', async (req, res) => {
                 session,
                 text,
                 from
-            )
+            );
         if (lawHandled){
             return res.status(200).send('OK');
         }
