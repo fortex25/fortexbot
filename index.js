@@ -241,19 +241,10 @@ app.post('/webhook', async (req, res) => {
                 from,
                 session.businessNumber,
                  `👋 Hi there!
-Welcome to Fortex Education.
 
 I'm Texa 😊, here to help you explore colleges, courses, admissions, and career options.
 
 Whether you're a student, parent, or guardian, I'll guide you through the process and help you find the right path for your future.
-
-I can help you with:
-
- 🎓 Admission Assistance
- 📊 Admission Chances
- 🧑‍🎓 Career Counseling
-
-Let's get started!
 
 ✨ May I know your name?`
             );
