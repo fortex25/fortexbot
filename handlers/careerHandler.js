@@ -48,6 +48,7 @@ async function handleCareer(
 
         await sendWhatsAppMessage(
             from,
+            session.businessNumber,
 `🎉 Thank you, ${session.name}!
 
 Our career counselor will contact you shortly and help you choose the right career path.

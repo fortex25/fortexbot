@@ -23,6 +23,7 @@ async function handleLaw(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 'Please type the law course you are interested in.'
             );
 

@@ -23,6 +23,7 @@ async function handleMedical(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `📚 Great!
 
 Please type the course you're interested in.`

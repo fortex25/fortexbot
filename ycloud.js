@@ -1,11 +1,13 @@
 const axios = require('axios');
 
-async function sendWhatsAppMessage(to, text) {
+async function sendWhatsAppMessage(to, 
+    businessNumber,
+    text) {
     try {
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'text',
                 text: {
@@ -30,12 +32,12 @@ async function sendWhatsAppMessage(to, text) {
     }
 }
 
-async function sendMainMenuList(to) {
+async function sendMainMenuList(to,businessNumber) {
     try {
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -94,12 +96,12 @@ async function sendMainMenuList(to) {
         );
     }
 }
-async function sendMainMenuButtons(to) {
+async function sendMainMenuButtons(to,businessNumber) {
     try {
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -152,13 +154,13 @@ async function sendMainMenuButtons(to) {
         );
     }
 }
-async function sendStreamList(to) {
+async function sendStreamList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -235,13 +237,13 @@ async function sendStreamList(to) {
         );
     }
 }
-async function sendMedicalCoursesList(to) {
+async function sendMedicalCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -322,13 +324,13 @@ async function sendMedicalCoursesList(to) {
         );
     }
 }
-async function sendAdmissionYearButtons(to) {
+async function sendAdmissionYearButtons(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -381,13 +383,13 @@ async function sendAdmissionYearButtons(to) {
         );
     }
 }
-async function sendStateList(to) {
+async function sendStateList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -448,13 +450,13 @@ async function sendStateList(to) {
         );
     }
 }
-async function sendPercentageList(to) {
+async function sendPercentageList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -529,13 +531,13 @@ What is your approximate percentage?`
         );
     }
 }
-async function sendEngineeringCoursesList(to) {
+async function sendEngineeringCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -616,13 +618,13 @@ async function sendEngineeringCoursesList(to) {
     }
 }
 
-async function sendManagementCoursesList(to) {
+async function sendManagementCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -695,13 +697,13 @@ async function sendManagementCoursesList(to) {
     }
 }
 
-async function sendArtsCoursesList(to) {
+async function sendArtsCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -774,13 +776,13 @@ async function sendArtsCoursesList(to) {
     }
 }
 
-async function sendCommerceCoursesList(to) {
+async function sendCommerceCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -857,13 +859,13 @@ async function sendCommerceCoursesList(to) {
     }
 }
 
-async function sendLawCoursesList(to) {
+async function sendLawCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -933,13 +935,13 @@ async function sendLawCoursesList(to) {
     }
 }
 
-async function sendAviationCoursesList(to) {
+async function sendAviationCoursesList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -1016,13 +1018,13 @@ async function sendAviationCoursesList(to) {
     }
 }
 
-async function sendAdmissionChanceList(to) {
+async function sendAdmissionChanceList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -1085,13 +1087,13 @@ async function sendAdmissionChanceList(to) {
         );
     }
 }
-async function sendCareerQualificationList(to) {
+async function sendCareerQualificationList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -1158,13 +1160,13 @@ async function sendCareerQualificationList(to) {
     }
 }
 
-async function sendInterestList(to) {
+async function sendInterestList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {
@@ -1245,13 +1247,13 @@ async function sendInterestList(to) {
     }
 }
 
-async function sendGuidanceList(to) {
+async function sendGuidanceList(to,businessNumber) {
     try {
 
         const response = await axios.post(
             'https://api.ycloud.com/v2/whatsapp/messages/sendDirectly',
             {
-                from: process.env.PHONE_NUMBER,
+                from: businessNumber,
                 to: to,
                 type: 'interactive',
                 interactive: {

@@ -23,6 +23,7 @@ async function handleAviation(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `✈ Great!
 
 Please type the aviation course you're interested in.`

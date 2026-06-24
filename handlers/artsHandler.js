@@ -23,6 +23,7 @@ async function handleArts(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 'Please type the course you are interested in.'
             );
 

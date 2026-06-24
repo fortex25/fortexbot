@@ -25,6 +25,7 @@ async function handleEngineering(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `💻 Great choice!
 
 Please type the engineering course you're interested in.`

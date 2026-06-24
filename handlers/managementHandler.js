@@ -23,6 +23,7 @@ async function handleManagement(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `💼 Great!
 
 Please type the management course you're interested in.`

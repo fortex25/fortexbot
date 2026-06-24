@@ -86,6 +86,7 @@ app.post('/webhook', async (req, res) => {
     try {
 
         const message = req.body.whatsappInboundMessage;
+        const businessNumber = message.to;
 
         if (!message) {
             return res.status(200).send('OK');
@@ -107,6 +108,9 @@ app.post('/webhook', async (req, res) => {
         console.log(JSON.stringify(req.body, null, 2));
 
         const session = await getSession(from);
+        session.businessNumber = businessNumber;
+
+        await saveSession(from, session);
 
         if (session.botStopped){
             return res.status(200).send('OK');
@@ -235,6 +239,7 @@ app.post('/webhook', async (req, res) => {
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                  `👋 Hi there!
 Welcome to Fortex Education.
 
@@ -272,6 +277,7 @@ Let's get started!
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `Nice to meet you, ${session.name}! 😊\n\n📍 Which place are you from?`
             );
 
@@ -287,6 +293,7 @@ Let's get started!
 
               await sendWhatsAppMessage(
                   from,
+                  session.businessNumber,
                   `Perfect! 👍\n\nTo help you better, please share a parent or guardian contact number.\n\n📱 Enter a valid 10-digit mobile number.`
               );
 
@@ -301,10 +308,13 @@ Let's get started!
 
           await sendWhatsAppMessage(
               from,
+              session.businessNumber,
               `Thank you ${session.name} 😊`
           );
 
-          await sendMainMenuButtons(from);
+          await sendMainMenuButtons(from,
+            session.businessNumber
+          );
 
           return res.status(200).send('OK');
       }
@@ -318,7 +328,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendStreamList(from);
+        await sendStreamList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -328,7 +340,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendAdmissionChanceList(from);
+        await sendAdmissionChanceList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -339,7 +353,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendCareerQualificationList(from);
+        await sendCareerQualificationList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -355,7 +371,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendMedicalCoursesList(from);
+        await sendMedicalCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -368,6 +386,7 @@ Let's get started!
 
         await sendWhatsAppMessage(
             from,
+            session.businessNumber,
             'Please type the course you are interested in.'
         );
 
@@ -382,7 +401,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendEngineeringCoursesList(from);
+        await sendEngineeringCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -395,7 +416,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendManagementCoursesList(from);
+        await sendManagementCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -408,7 +431,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendArtsCoursesList(from);
+        await sendArtsCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -421,7 +446,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendCommerceCoursesList(from);
+        await sendCommerceCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -434,7 +461,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendLawCoursesList(from);
+        await sendLawCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }
@@ -447,7 +476,9 @@ Let's get started!
 
         await saveSession(from, session);
 
-        await sendAviationCoursesList(from);
+        await sendAviationCoursesList(from,
+            session.businessNumber
+        );
 
         return res.status(200).send('OK');
     }

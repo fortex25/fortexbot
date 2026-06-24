@@ -22,6 +22,7 @@ async function handleChance(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `📝 Please enter the name of the entrance exam or qualifying exam.`
             );
 
@@ -36,6 +37,7 @@ async function handleChance(
 
         await sendWhatsAppMessage(
             from,
+            session.businessNumber,
             `📈 Great!
 
 Please enter your score or rank.`
@@ -54,6 +56,7 @@ Please enter your score or rank.`
 
         await sendWhatsAppMessage(
             from,
+            session.businessNumber,
             `📈 Thank you!
 
 Please enter your score or rank.`
@@ -72,6 +75,7 @@ Please enter your score or rank.`
 
         await sendWhatsAppMessage(
             from,
+            session.businessNumber,
             `🎓 Which course are you interested in?
 
 Please type your preferred course.`
@@ -88,6 +92,7 @@ Please type your preferred course.`
 
         await sendWhatsAppMessage(
             from,
+            session.businessNumber,
 `🎉 Thank you, ${session.name}!
 
 Your admission chance request has been submitted successfully.
@@ -99,7 +104,7 @@ Team Fortex Education 💙`
 
         session.botStopped=true;
 
-        session.step = 'start';
+        session.step = 'completed';
 
         await saveSession(from, session);
 

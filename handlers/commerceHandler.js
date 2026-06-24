@@ -23,6 +23,7 @@ async function handleCommerce(
 
             await sendWhatsAppMessage(
                 from,
+                session.businessNumber,
                 `📊 Great!
 
 Please type the commerce course you're interested in.`
