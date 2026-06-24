@@ -22,7 +22,9 @@ async function handleCareer(
 
         await saveSession(from, session);
 
-        await sendInterestList(from);
+        await sendInterestList(from,
+            session.businessNumber
+        );
 
         return true;
     }
@@ -35,7 +37,9 @@ async function handleCareer(
 
         await saveSession(from, session);
 
-        await sendGuidanceList(from);
+        await sendGuidanceList(from,
+            session.businessNumber
+        );
 
         return true;
     }

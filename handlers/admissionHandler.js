@@ -24,7 +24,9 @@ async function handleAdmission(
 
         await saveSession(from, session);
 
-        await sendStateList(from);
+        await sendStateList(from,
+            session.businessNumber
+        );
 
         return true;
     }
@@ -39,7 +41,9 @@ async function handleAdmission(
 
         await saveSession(from, session);
 
-        await sendPercentageList(from);
+        await sendPercentageList(from,
+            session.businessNumber
+        );
 
         return true;
     }

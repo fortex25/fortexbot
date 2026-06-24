@@ -36,7 +36,9 @@ async function handleLaw(
 
         await saveSession(from, session);
 
-        await sendAdmissionYearButtons(from);
+        await sendAdmissionYearButtons(from,
+            session.businessNumber
+        );
 
         return true;
     }
@@ -49,7 +51,9 @@ async function handleLaw(
 
         await saveSession(from, session);
 
-        await sendAdmissionYearButtons(from);
+        await sendAdmissionYearButtons(from,
+            session.businessNumber
+        );
 
         return true;
     }

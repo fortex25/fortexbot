@@ -40,7 +40,9 @@ Please type the engineering course you're interested in.`
 
         await saveSession(from, session);
 
-        await sendAdmissionYearButtons(from);
+        await sendAdmissionYearButtons(from,
+            session.businessNumber
+        );
 
         return true;
     }
@@ -55,7 +57,9 @@ Please type the engineering course you're interested in.`
 
         await saveSession(from, session);
 
-        await sendAdmissionYearButtons(from);
+        await sendAdmissionYearButtons(from,
+            session.businessNumber
+        );
 
         return true;
     }
